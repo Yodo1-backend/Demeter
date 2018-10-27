@@ -1,0 +1,25 @@
+{
+  "name": "demeter",
+  "version": "0.0.1",
+  "description": "Browser-Backend transfer portocal base on Socket.IO",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yodo1-backend/Demeter.git"
+  },
+  "keywords": [
+    "websocket"
+  ],
+  "author": "YanFeng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Yodo1-backend/Demeter/issues"
+  },
+  "homepage": "https://github.com/Yodo1-backend/Demeter#readme",
+  "dependencies": {
+    "socket.io": "^2.1.1"
+  }
+}
