@@ -1,0 +1,78 @@
+
+<html>
+    <title>Demeter Test</title>
+    <body>
+    
+    <h1>Demeter测试工具</h1>
+    
+    <p>1.发送信息测试</p>
+    <form>
+           消息名称:<br>
+           <input id="msgName" type="text" value="test">
+           <br>
+           消息内容:<br>
+           <input id="msgContent" type="text" value="Hello,Server!I'm Browser">
+           <br>
+           响应内容:<br>
+           <textarea id="responseStr" style="width: 2000px; height: 400px" readonly></textarea>
+        
+           <br>
+           <input type="button" value="Submit" onclick="SendMessage()">
+    </form> 
+    <p>2.监听服务端状态测试</p>
+    <form>
+           监听点名称:<br>
+           <input id="watchPointName" type="text" value="serverTime">
+           <br>
+           监听参数:<br>
+           <input id="watchPointParam" type="text" value="testBrowser">
+           <br>
+           响应内容:<br>
+           <textarea id="watchPointStr" style="width: 2000px; height: 400px" readonly></textarea>
+           <br>
+           <input type="button" value="Submit" onclick="StartWatchPoint()">
+    </form> 
+    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
+<script>
+  const socket = io.connect('http://localhost:3000');
+  const runtimeName = (new Date()).getTime();
+  console.log('Start connect to server')
+  socket.on('news', function (data) {
+    console.log(data);
+  });
+  socket.on('responMsg', function (data) {
+    console.log('Receive:',data);
+    var textArea = document.getElementById("watchPointStr")
+    textArea.value += data.res + "\n";
+    textArea.scrollTop = textArea.scrollHeight;
+  });
+  socket.on('watchPointInvoke', function (data) {
+    console.log('Receive Watch Invoke:',data);
+    var textArea = document.getElementById("responseStr")
+    textArea.value += data.res + "\n";
+    textArea.scrollTop = textArea.scrollHeight;
+  });
+    function SendMessage(){
+        var messageName = document.getElementById("msgName").value;
+        var messageContent = document.getElementById("msgContent").value;
+        var content = {
+            name:runtimeName,
+            content:messageContent
+        }
+        console.log('Ready Send Message:',messageName);
+        socket.emit(messageName,content);
+    }
+    function StartWatchPoint(){
+        var watchPointName = document.getElementById("watchPointName").value;
+        var watchPointParam = document.getElementById("watchPointParam").value;
+        var content = {
+            name:runtimeName,
+            watchpoint:watchPointName,
+            watchParam:watchPointParam
+        }
+        console.log('Ready Watch Point:',watchPointName);
+        socket.emit("watchpoint",content);
+    }
+</script>
+</html>
