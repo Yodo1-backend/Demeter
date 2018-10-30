@@ -22,16 +22,6 @@ var port = normalizePort(process.env.PORT || '3000');
 var server = http.createServer(app.callback());
 
 var io = require('../../../lib/demeterServer').Create(server);
-io.on('connection', function (socket) {
-  console.log('Someone connected')
-  socket.emit('news', { hello: 'world' });
-  socket.on('test', function (data) {
-    console.log(data);
-    var name = data.name;
-    var content = data.content;
-    socket.emit('responMsg', { res: 'Hello,'+ name +',I hear u say that {'+content+'}!' });
-  });
-});
 /**
  * Listen on provided port, on all network interfaces.
  */

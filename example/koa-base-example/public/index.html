@@ -35,24 +35,26 @@
     </body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.dev.js"></script>
 <script>
-  const socket = io.connect('http://localhost:3000');
-  const runtimeName = (new Date()).getTime();
-  console.log('Start connect to server')
-  socket.on('news', function (data) {
+    const MSG_NAME_WATCHPOINT_WATCH = 'innerWatchPointWatchMsg';
+    const MSG_NAME_WATCHPOINT_INVOKE = 'innerWatchPointInvokeMsg';
+    const socket = io.connect('http://localhost:3000');
+    const runtimeName = (new Date()).getTime();
+    console.log('Start connect to server')
+    socket.on('news', function (data) {
     console.log(data);
-  });
-  socket.on('responMsg', function (data) {
-    console.log('Receive:',data);
-    var textArea = document.getElementById("watchPointStr")
-    textArea.value += data.res + "\n";
-    textArea.scrollTop = textArea.scrollHeight;
-  });
-  socket.on('watchPointInvoke', function (data) {
-    console.log('Receive Watch Invoke:',data);
-    var textArea = document.getElementById("responseStr")
-    textArea.value += data.res + "\n";
-    textArea.scrollTop = textArea.scrollHeight;
-  });
+    });
+    socket.on('responMsg', function (data) {
+        console.log('Receive:',data);
+        var textArea = document.getElementById("responseStr")
+        textArea.value += data.res + "\n";
+        textArea.scrollTop = textArea.scrollHeight;
+    });
+    socket.on(MSG_NAME_WATCHPOINT_INVOKE, function (data) {
+        console.log('Receive Watch Invoke:',data);
+        var textArea = document.getElementById("watchPointStr")
+        textArea.value += data.time + "\n";
+        textArea.scrollTop = textArea.scrollHeight;
+    });
     function SendMessage(){
         var messageName = document.getElementById("msgName").value;
         var messageContent = document.getElementById("msgContent").value;
@@ -72,7 +74,7 @@
             watchParam:watchPointParam
         }
         console.log('Ready Watch Point:',watchPointName);
-        socket.emit("watchpoint",content);
+        socket.emit(MSG_NAME_WATCHPOINT_WATCH,content);
     }
 </script>
 </html>
